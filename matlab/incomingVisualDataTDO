@@ -78,8 +78,4 @@ function [visualData, timer] = incomingVisualDataTDO(params, dataPath, dataForma
 
     end
     
-    if params.visualData.save == true 
-        save('results/visualData.mat'); 
-    end
-    
 end
