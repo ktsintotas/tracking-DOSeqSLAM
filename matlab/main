@@ -1,0 +1,50 @@
+  
+% 
+
+% Copyright 2020, Konstantinos Tsintotas
+% ktsintot@pme.duth.gr
+%
+% This file is part of Tracking-DOseqSLAM framework for loop closure
+% detection
+%
+% racking-DOseqSLAM framework is free software: you can redistribute 
+% it and/or modify it under the terms of the MIT License as 
+% published by the corresponding authors.
+%  
+% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% MIT License for more details. <https://opensource.org/licenses/MIT>
+
+% define default parameters
+params = defaultParametersTDO();
+
+% import the camera measurements
+dataPath = ('images path\'); % e.g., myDatasetImages\
+dataFormat = '*.png'; % e.g., for png input data
+[visualData, timer] = incomingVisualData(params, dataPath, dataFormat);
+% define camera frequency
+visualData.frameRate = ;
+save('results/visualData', 'visualData', 'timer', '-v7.3');
+
+% process the dataset
+[results, timer] = trackedDOSeqSLAM(params, visualData, timer);
+save('results/results', 'results', 'timer');
+
+%% show some results
+
+thresh1 = .70;
+thresh2 = .9;
+[results] = doFindImageMatchesTDO(results, thresh1, thresh2);
+
+loopClosureMatrix = false(visualData.imagesLoaded, visualData.imagesLoaded);
+
+m = results.imageMatches;
+
+for i = 1 : visualData.imagesLoaded
+    if ~isnan(m(i))
+        loopClosureMatrix(i, m(i)) = true;
+    end
+end
+
+evaluationResults = methodEvaluation(params, loopClosureMatrix, groundTruth, thresh1);
