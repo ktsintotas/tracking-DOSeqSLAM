@@ -1,0 +1,41 @@
+% 
+
+% Copyright 2020, Konstantinos Tsintotas
+% ktsintot@pme.duth.gr
+%
+% This file is part of Tracking-DOseqSLAM framework for loop closure
+% detection
+%
+% racking-DOseqSLAM framework is free software: you can redistribute 
+% it and/or modify it under the terms of the MIT License as 
+% published by the corresponding authors.
+%  
+% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% MIT License for more details. <https://opensource.org/licenses/MIT>
+
+function [results, timer] = doDifferenceMatrixTDO(results, visualData, timer)
+     
+    dataset_1 = results.preprocessing;
+    dataset_2 = results.preprocessing;
+    timer.imageComparison = zeros(visualData.imagesLoaded, 1);
+    
+    disp('Calculating image difference matrix ...');
+
+    n = size(dataset_1, 2);
+    m = size(dataset_2, 2);
+
+    D = zeros(n, m, 'single');
+
+    for i = 1 : n
+        % start the timer for the image comparison
+        tic
+        d = dataset_2 - repmat(dataset_1(:, i), 1, m);
+        D(i, :) = sum(abs(d)) / n;
+        % stop the timer for the image comparison
+        timer.imageComparison(i, 1) = toc;
+    end
+    results.differenceMatrix = D;
+
+end
