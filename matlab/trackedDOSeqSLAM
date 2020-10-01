@@ -29,11 +29,6 @@ function [results, timer] = trackedDOSeqSLAM(params, visualData, timer)
         [results, timer] = doDifferenceMatrixTDO(results, visualData, timer);
     end
      
-    % contrast enhancement
-    if params.DO_CONTRAST_ENHANCEMENT
-        results = doContrastEnhancement(results, params);        
-    end
-
     if params.DO_DEFINE_SEQUENCES_TRACKED
         [results, timer] = doFindSequencesTDO(results, visualData, timer);
     end
