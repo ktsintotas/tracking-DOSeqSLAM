@@ -1,0 +1,103 @@
+% 
+
+% Copyright 2020, Konstantinos Tsintotas
+% ktsintot@pme.duth.gr
+%
+% This file is part of Tracking-DOseqSLAM framework for loop closure
+% detection
+%
+% racking-DOseqSLAM framework is free software: you can redistribute 
+% it and/or modify it under the terms of the MIT License as 
+% published by the corresponding authors.
+%  
+% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% MIT License for more details. <https://opensource.org/licenses/MIT>  
+
+function [results, timer] = doFindMatchesTDO(results, params, visualData, timer)
+        
+    disp('Searching for matching images ...');
+        
+    D = results.differenceMatrix;
+    matches = NaN(length(results.lastImagesAtSequence), 2);
+    i = 1;
+    Nsequences = results.lastImagesAtSequence + 1;
+    Nsequences(end) = [];
+    timer.matching = zeros(visualData.imagesLoaded, 1);
+    
+    for N = Nsequences
+        i = i + 1;
+        params.matching.ds = results.sequenceLength(i);
+        % start the timer for the matching
+        tic
+        matches(i, :) = findSingleMatch(D, N, params, visualData);
+         % stop the timer for the matching
+         timer.matching(N, 1) = toc;
+    end    
+    
+    results.sequenceMatches = matches;
+    
+end
+
+%%
+function match = findSingleMatch(D, N, params, visualData)
+
+    % We shall search for matches using velocities between
+    % params.matching.vmin and params.matching.vmax.
+    % However, not every vskip may be neccessary to check. So we first find
+    % out, which v leads to different trajectories:
+        
+    move_min = params.matching.vmin * params.matching.ds;
+    move_max = params.matching.vmax * params.matching.ds;
+    
+    move = move_min : move_max;
+    v = move / params.matching.ds;
+    
+    idx_add = repmat([0 : params.matching.ds], size(v, 2), 1);
+    idx_add = floor(idx_add .* repmat(v', 1, length(idx_add)));
+    
+    % this is where our trajectory starts
+    n_start = N; 
+    x= repmat(n_start : n_start + params.matching.ds, length(v), 1);    
+        
+    w = 40 * visualData.frameRate;
+    w2 = w + params.matching.ds;
+    score = zeros(1, N - w2);
+    
+    % add a line of inf costs so that we penalize running out of data
+            
+    y_max = size(D, 1);
+    xx = (x-1) * y_max;
+    
+    if ~isempty(score)
+        for s = 1 : length(score)
+            y = min(idx_add + s, y_max);
+            idx = xx + y;
+            score(s) = min(sum(D(idx), 2));
+        end
+
+        if ~isempty(score) && length(score) > 2*params.matching.ds
+            
+            % find min score and 2nd smallest score outside of a window around the minimum
+            [min_value, min_idx] = min(score);
+            Rwindow = params.matching.ds + mod(params.matching.ds, 2);
+            
+            % window to extract scores around the first chosen score
+            % R window definition, dynamically in order to better match the chosen image   
+            
+            window = max(1, min_idx - Rwindow/2) : min(length(score), min_idx + Rwindow);
+            not_window = setxor(1 : length(score), window);
+
+            [min_value_2nd, ~] = min(score(not_window));
+            match = [min_idx, min_value/min_value_2nd];
+        
+        else
+            match = [NaN NaN];
+        end
+        
+    else
+        match = [NaN NaN];
+    end
+    
+end
