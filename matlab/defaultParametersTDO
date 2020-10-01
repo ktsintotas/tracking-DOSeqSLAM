@@ -28,8 +28,7 @@ function params=defaultParametersTDO()
     params.DO_FIND_MATCHES = 1;
 
     % visual data
-    params.visualData.load = false;
-    params.visualData.save = true;
+    params.visualData.load = true;
     params.strongest = 500;
     params.featuresResponse = 100.0;
         
