@@ -1,0 +1,61 @@
+% 
+
+% Copyright 2020, Konstantinos Tsintotas
+% ktsintot@pme.duth.gr
+%
+% This file is part of Tracking-DOseqSLAM framework for loop closure
+% detection
+%
+% racking-DOseqSLAM framework is free software: you can redistribute 
+% it and/or modify it under the terms of the MIT License as 
+% published by the corresponding authors.
+%  
+% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% MIT License for more details. <https://opensource.org/licenses/MIT>
+
+function [results, timer] = doPreprocessingTDO(params, visualData, timer)
+         
+    % allocate memory for all the processed images
+    n = visualData.imagesLoaded;
+    m = params.downsample.size(1) * params.downsample.size(2); 
+    timer.imageResize = zeros(visualData.imagesLoaded, 1);
+    timer.imagePatchNormalization = zeros(visualData.imagesLoaded, 1);
+    
+    images = zeros(m,n, 'uint8');
+    j = 1;
+    
+    disp('Preprocessing ...');
+
+    % for every image ....
+    for i = 1 : visualData.imagesLoaded
+        
+        img = visualData.inputImage{i};
+        
+        % resize the image
+        if params.DO_RESIZE
+            % start the timer for the image resize
+            tic
+            img = imresize(img, params.downsample.size, params.downsample.method);
+            % stop the timer for the image resize
+            timer.imageResize(i, 1) = toc;
+        end
+               
+        % do patch normalization
+        if params.DO_PATCHNORMALIZATION
+            % start the timer for the image patch normalization
+            tic            
+            img = localcontrast(img, 0.5, 1);
+            % stop the timer for the image patch normalization
+            timer.imagePatchNormalization(i, 1) = toc;            
+        end
+            
+        images(:, j) = img(:);
+        j=j+1;        
+        
+    end
+
+     results.preprocessing = single(images);
+          
+end
