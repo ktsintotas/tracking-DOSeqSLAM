@@ -1,0 +1,69 @@
+% 
+
+% Copyright 2020, Konstantinos Tsintotas
+% ktsintot@pme.duth.gr
+%
+% This file is part of Tracking-DOseqSLAM framework for loop closure
+% detection
+%
+% racking-DOseqSLAM framework is free software: you can redistribute 
+% it and/or modify it under the terms of the MIT License as 
+% published by the corresponding authors.
+%  
+% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% MIT License for more details. <https://opensource.org/licenses/MIT>
+
+function [results] = doFindImageMatchesTDO(results, thresh1, thresh2)
+        
+    disp('Searching for matching images ...');
+        
+    D = results.differenceMatrix;
+    matches = NaN(size(D, 2), 2);   
+    
+    for i = 1 : length(results.sequenceMatches)
+        if results.sequenceMatches(i, 2) < thresh1 || (results.sequenceMatches(i, 2) < thresh2 && results.sequenceMatches(i-1, 2) < thresh2)
+            nStart = results.lastImagesAtSequence(i) - results.sequenceLength(i); 
+            nStop = results.lastImagesAtSequence(i);
+            matches(nStart : nStop, :) = findSingleMatch(D, i, results);
+        end
+    end
+    
+    results.imageMatches = matches;
+    
+end
+
+
+%%
+function match = findSingleMatch(D, N, results)
+  
+        % Image to image matching
+
+        % check the size of window where the image to image search would be performed
+        
+        match = zeros(results.sequenceLength(N) + 1, 2);
+
+        n2 = results.lastImagesAtSequence(N-1) + 1;
+        for h = 1 : results.sequenceLength(N) + 1
+            if h == 1
+                n2 = n2;
+                idx = results.sequenceMatches(N, 1);
+            else
+                n2 = n2 + 1;
+                idx = idx + 1;
+            end
+            
+            Rwindow = 20;
+
+            window = max(1, idx - Rwindow) : idx + Rwindow;
+            [~, min_img1] = min(D(window, n2));
+
+            min_img1 = (window(1) + min_img1) - 1;
+                        
+            match(h, :) = [min_img1 results.sequenceMatches(N, 2)];
+            
+        end        
+
+end
+
