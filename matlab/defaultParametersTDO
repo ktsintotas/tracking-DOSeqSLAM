@@ -23,7 +23,6 @@ function params=defaultParametersTDO()
     params.DO_RESIZE = 1;
     params.DO_PATCHNORMALIZATION = 1;
     params.DO_DIFF_MATRIX = 1;
-    params.DO_CONTRAST_ENHANCEMENT = 0;
     params.DO_DEFINE_SEQUENCES_TRACKED = 1;
     params.DO_FIND_MATCHES = 1;
 
