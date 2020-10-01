@@ -22,7 +22,7 @@ params = defaultParametersTDO();
 % import the camera measurements
 dataPath = ('images path\'); % e.g., myDatasetImages\
 dataFormat = '*.png'; % e.g., for png input data
-[visualData, timer] = incomingVisualData(params, dataPath, dataFormat);
+[visualData, timer] = incomingVisualDataTDO(params, dataPath, dataFormat);
 % define camera frequency
 visualData.frameRate = ;
 save('results/visualData', 'visualData', 'timer', '-v7.3');
