@@ -4,7 +4,7 @@ This open source MATLAB algorith presents a low complexity loop closure detectio
 Each of these groups-of-images is generated on-line through a points’ tracking repeatability check employed on the perceived visual sensory information.
 When querying the database, the proper candidate place is selected and, through an image-to-image search, the appropriate location is chosen.
 
-Note that the Tracking-DOSeqSLAM approach is a research code.
+The Tracking-DOSeqSLAM approach is a research code.
 
 ## Conditions of use
 Tracking-DOSeqSLAM is distributed under the terms of the [MIT License](https://github.com/ktsintotas/Bag-of-Tracked-Words/blob/master/LICENSE).
