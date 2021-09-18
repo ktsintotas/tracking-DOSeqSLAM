@@ -1,8 +1,10 @@
-# Tracking-DOSeqSLAM: A Dynamic Sequence-Based Visual Place Recognition Paradigm
+# Tracking‐DOSeqSLAM: A dynamic sequence‐based visual place recognition paradigm
 
-This open source MATLAB algorith presents a low complexity loop closure detection pipeline wherein the traversed trajectory (map) is represented by sequence-based locations (sub-maps). Each of these groups-of-images is generated on-line through a points’ tracking repeatability check employed on the perceived visual sensory information. When querying the database, the proper candidate place is selected and, through an image-to-image search, the appropriate location is chosen.
+This open source MATLAB algorith presents a low complexity loop closure detection pipeline wherein the traversed trajectory (map) is represented by sequence-based locations (sub-maps).
+Each of these groups-of-images is generated on-line through a points’ tracking repeatability check employed on the perceived visual sensory information.
+When querying the database, the proper candidate place is selected and, through an image-to-image search, the appropriate location is chosen.
 
-Note that the Tracking-DOSeqSLAM approach is a research code. The authors are not responsible for any errors it may contain. **Use it at your own risk!**
+Note that the Tracking-DOSeqSLAM approach is a research code.
 
 ## Conditions of use
 Tracking-DOSeqSLAM is distributed under the terms of the [MIT License](https://github.com/ktsintotas/Bag-of-Tracked-Words/blob/master/LICENSE).
@@ -10,23 +12,23 @@ Tracking-DOSeqSLAM is distributed under the terms of the [MIT License](https://g
 ## Related publication
 The details of the algorithm are explained in:
 
-**Tracking-DOSeqSLAM: A Dynamic Sequence-Based Visual Place Recognition Paradigm<br/>**
+**Tracking‐DOSeqSLAM: A dynamic sequence‐based visual place recognition paradigm<br/>**
 Konstantinos A. Tsintotas, Loukas Bampis, and Antonios Gasteratos<br/>
-
+IET Computer Vision (Wiley)
 If you use this code, please cite:
 
 ```
-@ARTICLE{tsintotas2020trackingdoseqslam,
-  title={Tracking-DOSeqSLAM: A Dynamic Sequence-Based Visual Place Recognition Paradigm},  
+@article{tsintotas2020trackingdoseqslam,
+  title={Tracking‐DOSeqSLAM: A dynamic sequence‐based visual place recognition paradigm},  
   author={K. A. Tsintotas and L. Bampis and A. Gasteratos},   
   journal={IET Computer Vision},
-  volume={},
-  number={},
-  pages={},
+  volume={15},
+  number={4},
+  pages={258-273},
   year={2020},   
-  month={}, 
-  doi={}  
+  month={June}, 
+  doi={10.1049/cvi2.12041}  
 }
 ```
 ## Contact
-If you have problems or questions using this code, please contact the author (ktsintot@pme.duth.gr). Ground truth requests and contributions are totally welcome.
+If you have problems or questions using this code, please contact the author (e-mail address: ktsintot@pme.duth.gr, ktsintotas@icloud.com). Contributions are totally welcome.
