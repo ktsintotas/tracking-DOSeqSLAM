@@ -15,6 +15,7 @@ The details of the algorithm are explained in:
 **Tracking‐DOSeqSLAM: A dynamic sequence‐based visual place recognition paradigm<br/>**
 Konstantinos A. Tsintotas, Loukas Bampis, and Antonios Gasteratos<br/>
 IET Computer Vision (Wiley)
+
 If you use this code, please cite:
 
 ```
