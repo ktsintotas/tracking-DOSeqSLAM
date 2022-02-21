@@ -6,11 +6,11 @@
 % This file is part of Tracking-DOseqSLAM framework for loop closure
 % detection
 %
-% racking-DOseqSLAM framework is free software: you can redistribute 
+% Tracking-DOseqSLAM framework is free software: you can redistribute 
 % it and/or modify it under the terms of the MIT License as 
 % published by the corresponding authors.
 %  
-% racking-DOseqSLAM pipeline is distributed in the hope that it will be 
+% Tracking-DOseqSLAM pipeline is distributed in the hope that it will be 
 % useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % MIT License for more details. <https://opensource.org/licenses/MIT>  
